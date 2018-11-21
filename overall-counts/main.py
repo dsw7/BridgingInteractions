@@ -122,10 +122,17 @@ for iteration, CODE in enumerate(current_PDB_files_pyList[START:END]):
     path_to_file = file_pdb.fetch_from_PDB()
     
     if path_to_file == 'URLError':
+        print('URLError')
         continue
     else:
-        data_retrieved = met_aromatic(CHAIN=CHAIN, CUTOFF=CUTOFF, ANGLE=ANGLE, 
-                                      MODEL=MODEL, filepath=path_to_file) 
+        try:  # catch other exceptions such as "string crashes", missing coordinates, etc., in PDB files
+            data_retrieved = met_aromatic(CHAIN=CHAIN, 
+                                          CUTOFF=CUTOFF, 
+                                          ANGLE=ANGLE, 
+                                          MODEL=MODEL, 
+                                          filepath=path_to_file)
+        except Exception as exception:
+            print(exception)
         file_pdb.clear()
     
     if len(data_retrieved) == 0:  # next iteration if no interactions
