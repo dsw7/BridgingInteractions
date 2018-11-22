@@ -9,6 +9,35 @@ Written by David S. Weber
 (6) Script applies Met-Aromatic algorithm to each local PDB file
 (7) Script finds closely spaced Tyr/Trp residues in each local PDB file
 (8) Script compares bridge/chain membership
+
+
+Testing:
+Previous results.txt:
+    
+1BS2 : NR : {'TYR362', 'TYR188'} : {'TRP192', 'TRP266'} : 6.1.1.19 : SACCHAROMYCES CEREVISIAE;  
+1BS2 : NR : {'TYR362', 'TYR188'} : {'TYR491', 'TYR440'} : 6.1.1.19 : SACCHAROMYCES CEREVISIAE;  
+1BS2 : NR : {'TYR362', 'TYR188'} : {'TYR534', 'TYR553', 'TYR134'} : 6.1.1.19 : SACCHAROMYCES CEREVISIAE;  
+1BS2 : NR : {'TYR362', 'TYR188'} : {'TRP393', 'TYR359'} : 6.1.1.19 : SACCHAROMYCES CEREVISIAE;  
+1BS2 : NR : {'TYR362', 'TYR188'} : {'TYR281', 'TYR288', 'TYR277', 'TYR291'} : 6.1.1.19 : SACCHAROMYCES CEREVISIAE;  
+1BS2 : NR : {'TYR362', 'TYR188'} : {'TRP181', 'TYR176'} : 6.1.1.19 : SACCHAROMYCES CEREVISIAE;  
+1BS2 : IS : {'TYR362', 'TYR188'} : {'TYR347', 'TYR188'} : 6.1.1.19 : SACCHAROMYCES CEREVISIAE;  
+1BS2 : NR : {'TYR362', 'TYR188'} : {'TYR585', 'TYR565'} : 6.1.1.19 : SACCHAROMYCES CEREVISIAE;  
+
+Current results.txt:
+    
+1BS2 : Chains : TYR288, TYR277, TYR291, TYR281,      y
+1BS2 : Chains : TYR553, TYR534, TYR134,              y
+1BS2 : Chains : TRP393, TYR359,                      y
+1BS2 : Chains : TYR491, TYR440,                      y
+1BS2 : Chains : TYR347, TYR188,                      y
+1BS2 : Chains : TRP181, TYR176,                      y
+1BS2 : Chains : TYR585, TYR565,                      y
+1BS2 : Chains : TRP266, TRP192,                      y
+
+1BS2 : Bridges : TYR362, TYR188,     <- match
+1BS2 : Bridges : TRP192, PHE252,     <- new
+1BS2 : Bridges : TYR369, PHE364,     <- new
+
 """
 
 # TODO: I put a benchmark flag in nn.py -> check this
@@ -20,7 +49,7 @@ Written by David S. Weber
 # search parameters
 # --------------
 START = 0
-END   = 30  # set to -1 to iterate over entire PDB
+END   = -1  # set to -1 to iterate over entire PDB
 
 
 # PDB parameters
@@ -42,11 +71,16 @@ from ma_lowlevel            import met_aromatic
 from platform               import node
 from time                   import sleep
 from nn                     import get_nn
+from operator               import itemgetter
+from itertools              import groupby, chain
+import networkx as nx
 
 
 # ------------------------------------------------------------------------------
 
 # TODO: prepare SQL database here
+f = open('results.txt', 'w')
+f.close()
 
 # ------------------------------------------------------------------------------
 
@@ -71,20 +105,48 @@ for iteration, CODE in enumerate(current_PDB_files_pyList[START:END]):
         print('URLError')
         continue
     
-    else:
-        try:  # catch other exceptions such as "string crashes", missing coordinates, etc., in PDB files
-            chains = get_nn(filepath=path_to_file, cutoff=7.4)
-            if chains == []:        # next iteration if no chains in file
-                file_pdb.clear()
-                continue
-            
-            interactions = met_aromatic(path_to_file, *args)
-            if interactions == []:  # next iteration if no interactions in file
-                file_pdb.clear()
-                continue
+    try:  # catch other exceptions such as "string crashes", missing coordinates, etc., in PDB files
+        chains = get_nn(filepath=path_to_file, cutoff=7.4)
+        if chains == []: file_pdb.clear(); continue
         
-                    
-        except Exception as exception: 
-            print(exception)
+        interactions = met_aromatic(path_to_file, *args)
+        if interactions == []: file_pdb.clear(); continue
+    
+    except Exception as exception: 
+        print(exception)
         file_pdb.clear()
+        continue
+        
+    # isolate bridging pairs
+    pairs = [('{}{}'.format(i[0], i[1]), '{}{}'.format(i[2], i[3])) for i in interactions]
+    pairs = list(set(pairs))  # remove identical lines due to multiple vectors v
+    G1 = nx.Graph()
+    G1.add_edges_from(pairs)
+    bridges = []
+    for disconnects in list(nx.connected_components(G1)):
+        if len(disconnects) == 3: bridges.append(list(disconnects))                
+        
+    if bridges == []: file_pdb.clear(); continue
+    
+    # remove MET data
+    for nx_sets in bridges:
+        for entry in nx_sets.copy():
+            if 'MET' in entry: nx_sets.remove(entry)
+                    
+    # remove inverse bridges
+    bridges = list(filter(lambda entry: len(entry) > 1, bridges))
+    
+    if bridges == []: file_pdb.clear(); continue
+
+    # get disconnected components
+    G2 = nx.Graph()
+    G2.add_edges_from(chains)
+    chains = list(nx.connected_components(G2))
+    
+    f = open('results.txt', 'a')
+    for c in chains: f.write('{} : Chains : {} \n'.format(CODE, ('{}, ' * len(c)).format(*c)))
+    for b in bridges: f.write('{} : Bridges : {} \n'.format(CODE, ('{}, ' * len(b)).format(*b)))
+    f.close()
+    
+    file_pdb.clear()
     
