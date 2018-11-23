@@ -41,8 +41,6 @@ Current results.txt:
 
 """
 
-# TODO: I put a benchmark flag in nn.py -> check this
-
 # ------------------------------------------------------------------------------
 # input parameters to be specified by researcher
 
