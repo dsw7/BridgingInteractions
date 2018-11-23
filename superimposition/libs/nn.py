@@ -21,7 +21,6 @@ ATOMS_TYR = r'CG|CZ'
 ATOMS_TRP = r'CD2|CH2'
 
 def groupby_to_midpoint(nested_list):
-    # TODO: benchmark this
     # groupby object -> tuple of res/pos, midpoint
     v1 = array(nested_list[0][6:9]).astype(float)
     v2 = array(nested_list[1][6:9]).astype(float)
