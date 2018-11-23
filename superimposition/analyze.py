@@ -55,7 +55,9 @@ def compare_networks(chain_list, bridge_list):
 # -----------------------------------------------------------------------------------
 # process data and plot pie chart
 
-with open('results_updated_with_AroMetX.txt') as f: data = f.readlines()
+# filename = r'/Volumes/MSC/DATABASES/2018 Bridging Databases/results_updated_with_AroMetX.txt'
+filename = 'results_updated_with_AroMetX.txt'
+with open(filename) as f: data = f.readlines()
         
 data_sorted   = sorted(data, key=itemgetter(0)) 
 data_sorted   = [d.split(':') for d in data]
@@ -129,6 +131,17 @@ ax2.text(0.0,
          va='center',  
          bbox=dict(boxstyle='round', facecolor='white', edgecolor='k'))
 
-plt.savefig('bridge_counts.png', bbox_inches='tight', dpi=1000)
+#plt.savefig('bridge_counts.png', bbox_inches='tight', dpi=1000)
 plt.show()
+
+
+# print some stats to console
+print('Total number of proteins analyzed: {}'.format(number_of_proteins))
+print('Proteins containing both a chain and a bridge: {}'.format(analyzed_proteins))
+print('Number of bridge / chain pairs compared: {}'.format(len(membership)))
+print('NR counts: {}'.format(counts_NR))
+print('DS counts: {}'.format(counts_DS))
+print('IS counts: {}'.format(counts_IS))
+print('2R counts: {}'.format(counts_PM))
+
     
