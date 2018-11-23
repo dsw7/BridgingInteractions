@@ -8,7 +8,8 @@ Written by David S. Weber
 (5) Script downloads the PDB file corresponding to each iteration
 (6) Script applies Met-Aromatic algorithm to each local PDB file
 (7) Script finds closely spaced Tyr/Trp residues in each local PDB file
-(8) Script compares bridge/chain membership
+(8) Script filters in only 2-bridges from Met-Aromatic output
+(9) Chain / bridge data is exported for analysis
 
 
 Testing:
@@ -78,11 +79,11 @@ import networkx as nx
 
 # ------------------------------------------------------------------------------
 
-# TODO: prepare SQL database here
-f = open('results.txt', 'w')
+# create a text file for dumping results
+# --------------------------------------
+f = open('results_superimposition.txt', 'w')
 f.close()
 
-# ------------------------------------------------------------------------------
 
 # get current list of all PDB codes from RCSB PDB
 # -----------------------------------------------
@@ -94,6 +95,8 @@ current_PDB_files_entrycount = current_PDB_files_pyDict.get('resultCount')
 if END == -1: END = current_PDB_files_entrycount
 
 
+# iterate over all PDB files
+# --------------------------
 for iteration, CODE in enumerate(current_PDB_files_pyList[START:END]):
     status = '{} - Analyzed {} of {} PDB entries.'.format(CODE, iteration + 1, current_PDB_files_entrycount)
     print(status)
@@ -107,10 +110,10 @@ for iteration, CODE in enumerate(current_PDB_files_pyList[START:END]):
     
     try:  # catch other exceptions such as "string crashes", missing coordinates, etc., in PDB files
         chains = get_nn(filepath=path_to_file, cutoff=7.4)
-        if chains == []: file_pdb.clear(); continue
+        if chains == []: file_pdb.clear(); continue        # next iteration if no chains
         
         interactions = met_aromatic(path_to_file, *args)
-        if interactions == []: file_pdb.clear(); continue
+        if interactions == []: file_pdb.clear(); continue  # next iteration if no met-aromatic interactions
     
     except Exception as exception: 
         print(exception)
@@ -125,7 +128,8 @@ for iteration, CODE in enumerate(current_PDB_files_pyList[START:END]):
     bridges = []
     for disconnects in list(nx.connected_components(G1)):
         if len(disconnects) == 3: bridges.append(list(disconnects))                
-        
+    
+    # next iteration if no 2-bridges
     if bridges == []: file_pdb.clear(); continue
     
     # remove MET data
@@ -136,6 +140,7 @@ for iteration, CODE in enumerate(current_PDB_files_pyList[START:END]):
     # remove inverse bridges
     bridges = list(filter(lambda entry: len(entry) > 1, bridges))
     
+    # next iteration if no bridges remain
     if bridges == []: file_pdb.clear(); continue
 
     # get disconnected components
@@ -143,7 +148,8 @@ for iteration, CODE in enumerate(current_PDB_files_pyList[START:END]):
     G2.add_edges_from(chains)
     chains = list(nx.connected_components(G2))
     
-    f = open('results.txt', 'a')
+    # write to file
+    f = open('results_superimposition.txt', 'a')
     for c in chains: f.write('{} : Chains : {} \n'.format(CODE, ('{}, ' * len(c)).format(*c)))
     for b in bridges: f.write('{} : Bridges : {} \n'.format(CODE, ('{}, ' * len(b)).format(*b)))
     f.close()
