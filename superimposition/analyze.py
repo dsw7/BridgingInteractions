@@ -55,8 +55,8 @@ def compare_networks(chain_list, bridge_list):
 # -----------------------------------------------------------------------------------
 # process data and plot pie chart
 
-# filename = r'/Volumes/MSC/DATABASES/2018 Bridging Databases/results_updated_with_AroMetX.txt'
-filename = 'results_updated_with_AroMetX.txt'
+filename = r'/Volumes/MSC/DATABASES/2018 Bridging Databases/results_updated_with_AroMetX.txt'
+# filename = 'results_updated_with_AroMetX.txt'
 with open(filename) as f: data = f.readlines()
         
 data_sorted   = sorted(data, key=itemgetter(0)) 
@@ -82,58 +82,88 @@ counts_IS = membership.count('IS')
 counts_DS = membership.count('DS')
     
 sizes1 = [analyzed_proteins, discarded_proteins]
-sizes2 = [counts_NR, counts_PM, counts_IS, counts_DS]
+sizes2 = [counts_NR, counts_PM + counts_IS + counts_DS]
+sizes3 = [counts_PM, counts_IS, counts_DS]
 
 def formatter1(pct):
     return '{:0.0f}\n({:0.1f}%)'.format(pct * sum(sizes1) / 100, pct)
 
 dimensions = 1.5
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(dimensions * 5.0, dimensions * 2.5))
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(dimensions * 5.0, dimensions * 1.5))
 
 labels1 = ('A', 'NA')
-labels2 = ('NR', '2R', 'IS', 'DS')
+labels2 = ('NR', 'R')
+labels3 = ('2R', 'IS', 'DS')
 
-explode1 = (0.0, 0.075)
-explode2 = (0.0, 0.075, 0.15, 0.225)
+# keep explode tuples in case we need to change
+explode1 = (0.0, 0.0)
+explode2 = (0.0, 0.0)
+explode3 = (0.0, 0.0, 0.0)
 
+ax1.axis('equal')
+ax2.axis('equal')
+ax3.axis('equal')
+
+SIZE_textprops = 10
+
+# left pie chart
+# --------------
 ax1.pie(sizes1, 
         labels=labels1, 
         #autopct='%1.1f%%',
         autopct=formatter1,
         explode=explode1, 
-        textprops={'fontsize': 12})
-        
-ax2.pie(sizes2, 
-        labels=labels2,  
-        autopct='%1.1f%%', 
-        explode=explode2, 
-        startangle=-30, 
-        pctdistance=0.75, 
-        textprops={'fontsize': 12},
-        labeldistance=1.15)
+        textprops={'fontsize': SIZE_textprops})
 
-ax1.axis('equal')
-ax2.axis('equal')
-
-ax1.text(-0.05, 
-         -1.25, 
+ax1.text(0.0, 
+         1.35, 
          'PDB Files', 
          ha='center', 
          size=16, 
          va='center', 
          bbox=dict(boxstyle='round', facecolor='white', edgecolor='k'))
          
+# middle pie chart
+# ----------------   
+ax2.pie(sizes2, 
+        labels=labels2,  
+        autopct='%1.1f%%', 
+        explode=explode2, 
+        startangle=-30, 
+        pctdistance=0.65, 
+        textprops={'fontsize': SIZE_textprops},
+        labeldistance=1.15)
+
 ax2.text(0.0, 
-         1.2, 
-         'Bridges',
+         1.35, 
+         'Relationships',
+         ha='center', 
+         size=16,
+         va='center',  
+         bbox=dict(boxstyle='round', facecolor='white', edgecolor='k'))
+         
+# right pie chart
+# ---------------      
+ax3.pie(sizes3, 
+        labels=labels3,  
+        autopct='%1.1f%%', 
+        explode=explode3, 
+        startangle=-60, 
+        pctdistance=0.65, 
+        textprops={'fontsize': SIZE_textprops},
+        labeldistance=1.15)
+        
+ax3.text(0.0, 
+         1.35, 
+         'Rel. Type',
          ha='center', 
          size=16,
          va='center',  
          bbox=dict(boxstyle='round', facecolor='white', edgecolor='k'))
 
-#plt.savefig('bridge_counts.png', bbox_inches='tight', dpi=1000)
-plt.show()
 
+plt.savefig('bridge_counts.png', bbox_inches='tight', dpi=1000)
+plt.show()
 
 # print some stats to console
 print('Total number of proteins analyzed: {}'.format(number_of_proteins))
