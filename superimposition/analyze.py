@@ -84,9 +84,10 @@ counts_DS = membership.count('DS')
 sizes1 = [analyzed_proteins, discarded_proteins]
 sizes2 = [counts_NR, counts_PM + counts_IS + counts_DS]
 sizes3 = [counts_PM, counts_IS, counts_DS]
-
-def formatter1(pct):
-    return '{:0.0f}\n({:0.1f}%)'.format(pct * sum(sizes1) / 100, pct)
+    
+def raw_val_1(val): return int(round(val / 100.00 * sum(sizes1), 0))         
+def raw_val_2(val): return int(round(val / 100.00 * sum(sizes2), 0))
+def raw_val_3(val): return int(round(val / 100.00 * sum(sizes3), 0))
 
 dimensions = 1.5
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(dimensions * 5.0, dimensions * 1.5))
@@ -109,9 +110,8 @@ SIZE_textprops = 10
 # left pie chart
 # --------------
 ax1.pie(sizes1, 
-        labels=labels1, 
-        #autopct='%1.1f%%',
-        autopct=formatter1,
+        labels=labels1,
+        autopct=raw_val_1,
         explode=explode1, 
         textprops={'fontsize': SIZE_textprops})
 
@@ -124,10 +124,12 @@ ax1.text(0.0,
          bbox=dict(boxstyle='round', facecolor='white', edgecolor='k'))
          
 # middle pie chart
-# ----------------   
+# ----------------  
+         
+val = True         
 ax2.pie(sizes2, 
         labels=labels2,  
-        autopct='%1.1f%%', 
+        autopct=raw_val_2,
         explode=explode2, 
         startangle=-30, 
         pctdistance=0.65, 
@@ -146,7 +148,7 @@ ax2.text(0.0,
 # ---------------      
 ax3.pie(sizes3, 
         labels=labels3,  
-        autopct='%1.1f%%', 
+        autopct=raw_val_3, 
         explode=explode3, 
         startangle=-60, 
         pctdistance=0.65, 
@@ -164,6 +166,7 @@ ax3.text(0.0,
 
 plt.savefig('bridge_counts.png', bbox_inches='tight', dpi=1000)
 plt.show()
+
 
 # print some stats to console
 print('Total number of proteins analyzed: {}'.format(number_of_proteins))
