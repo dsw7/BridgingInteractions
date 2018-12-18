@@ -1,6 +1,6 @@
 ## Description
 
-Algorithm for find the closest protein surface coordinate relative either a   
+Algorithm for finding the closest protein surface coordinate relative to either a   
 metal (**MT**) or bridging SD (**SD**) coordinate. The algorithm assumes that  
 the input already contains both a bridging interaction and a metal.  
 
@@ -26,8 +26,8 @@ I project a series of vectors from the MT coordinate to all surface coordinates.
 ---  
 
 ## Step 4  
-The set of coordinates yielding the minimum MT / surface distance are collected. Equivalently, the  
-set of coordinates yielding the minimum SD / surface distance are collected. Of the two pairs, the pair  
-yielding the shortest distance is collected. The surface coordinate yielding this shortest distance is  
+The set of coordinates yielding the minimum MT / surface distance are collected. The  
+set of coordinates yielding the minimum SD / surface distance are also collected. Of the two pairs, the pair  
+yielding the shortest distance is chosen. The surface coordinate yielding this shortest distance is  
 labelled coordinate **SF**.  
 <img src = "https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/coordinate-to-surface/scalene_step4.png" width="400">
