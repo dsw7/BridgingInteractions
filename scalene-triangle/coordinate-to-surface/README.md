@@ -9,7 +9,7 @@ the input already contains both a bridging interaction and a metal.
 ## Step 1  
 The input. I approximate a "protein surface" using a set of equidistant coordinates  
 spaced a fixed radius from an origin (i.e. _on a circle!_).  
-<img src = "https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/coordinate-to-surface/scalene_step1.png">
+<img src = "https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/coordinate-to-surface/scalene_step1.png" width="400">
 
 ---  
 
