@@ -36,6 +36,12 @@ Through the PyMOL command line. This reveals the following surface coordinate da
     ('A', 130, 'OG1', -22.766000747680664, -4.216000080108643, 6.041999816894531)
     ('A', 146, 'CG2', 4.999000072479248, 9.682000160217285, 7.688000202178955)
     ('A', 151, 'NZ', -6.323999881744385, -3.632999897003174, -1.753999948501587)
-    ('A', 155, 'O', -17.29800033569336, -12.741000175476074, 0.0860000029206276)
+    ('A', 155, 'O', -17.29800033569336, -12.741000175476074, 0.0860000029206276)   
 
     
+Which is the list of coordinates for the following solvent exposed atoms:   
+
+<img src="https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/pymol-get-surface-example/1rcy_example.png">   
+
+Importantly, this script only finds "A" chain surface coordinates. Note that the first model (in multimodel   
+PDB file entries) is analyzed by default.  
