@@ -132,7 +132,7 @@ plt.show()
 # now we need to get distances from MT and SD to SF
 # ===========================================================
 
-def get_closest(SF, SD, MT):
+def get_closest(c_SF, c_SD, c_MT):
     """
     I casted this as a function to make this modular for actual study.
     Input
@@ -149,15 +149,15 @@ def get_closest(SF, SD, MT):
     
     # SD / SF distances
     SD_SF = {}
-    for xyz in coordinates_SF:
-        distance = np.linalg.norm(SD - xyz)
-        SD_SF[distance] = (SD, xyz)
+    for xyz in c_SF:
+        distance = np.linalg.norm(c_SD - xyz)
+        SD_SF[distance] = (c_SD, xyz)
         
     # MT / SF distances
     MT_SF = {}
-    for xyz in coordinates_SF:
-        distance = np.linalg.norm(MT - xyz)
-        MT_SF[distance] = (MT, xyz)
+    for xyz in c_SF:
+        distance = np.linalg.norm(c_MT - xyz)
+        MT_SF[distance] = (c_MT, xyz)
      
     # get shortest distances
     min_SD_SF = min(SD_SF)
