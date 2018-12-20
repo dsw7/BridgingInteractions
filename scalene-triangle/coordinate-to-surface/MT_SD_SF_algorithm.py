@@ -137,9 +137,9 @@ def get_closest(c_SF, c_SD, c_MT):
     I casted this as a function to make this modular for actual study.
     Input
     -----
-    SF : iterable of surface coordinates obtained from PyMOL
-    SD : a single R3 set of coordinates of form array([ 2.2, -2. ,  0. ])
-    MT : a single R3 set of coordinates of form array([2. , 1.5, 0. ])
+    c_SF : iterable of surface coordinates obtained from PyMOL
+    c_SD : a single R3 set of coordinates of form array([ 2.2, -2. ,  0. ])
+    c_MT : a single R3 set of coordinates of form array([2. , 1.5, 0. ])
     
     Output
     ------
