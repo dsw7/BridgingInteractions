@@ -10,6 +10,14 @@
                                                  // for PDB entries located in delim.txt
     ~/scalene-triangle/delim.txt                 // a .txt file that tells main script which entries to analyze
     ~/scalene-triangle/analyze.py                // the main script loads data into a .txt file. This script analyzes
-                                                 // that .txt file and generates three histograms
+                                                 // that .txt file and generates three sets of histograms
+    ~/scalene-triangle/analyze_sidebyside.py     // almost identical to analyze.py but subplots are rendered side-by-side
+                                                 // plot dimensions, font sizes & tick frequency also changed                                                                                           
     ~/scalene-triangle/test.py                   // compares data from Summer 2018 study to Winter 2018 study                                           
     
+---  
+### Analyze_sidebyside.py output examples:  
+  
+<img src="https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/all_phe.png">  
+<img src="https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/aro_phe.png">  
+<img src="https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/aro_aro.png">  
