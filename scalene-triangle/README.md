@@ -16,8 +16,8 @@
     ~/scalene-triangle/test.py                   // compares data from Summer 2018 study to Winter 2018 study                                           
     
 ---  
-### Analyze_sidebyside.py output examples:  
+### analyze_sidebyside.py output examples:  
   
 <img src="https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/all_phe.png">  
-<img src="https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/aro_phe.png">  
+<img src="https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/phe_aro.png">  
 <img src="https://github.com/dsw7/BridgingInteractions/blob/master/scalene-triangle/aro_aro.png">  
