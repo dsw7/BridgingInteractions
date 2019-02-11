@@ -13,7 +13,7 @@
                                                  // that .txt file and generates three sets of histograms
     ~/scalene-triangle/analyze_sidebyside.py     // almost identical to analyze.py but subplots are rendered side-by-side
                                                  // plot dimensions, font sizes & tick frequency also changed                                                                                           
-    ~/scalene-triangle/test.py                   // compares data from Summer 2018 study to Winter 2018 study                                           
+    ~/scalene-triangle/test.py                   // compares data from Summer 2018 study to Winter 2018 study                                 ~/scalene-triangle/results_scalene.txt       // the source file for analyze.py / analyze_sidebyside.py scripts             
     
 ---  
 ### analyze_sidebyside.py output examples:  
