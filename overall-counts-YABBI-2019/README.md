@@ -1,6 +1,6 @@
 ## Met-aromatic low level routine + bridging interactions
 ---  
-A low level object oriented package for running the Met-aromatic algorithm. See DSW thesis for a theoretical description. Met-aromatic data is first collected using ```runner.py``` which loads data into a MongoDB database. The script ```analyze.py``` runs a set of queries on the MongoDB database and returns meaningful data which can be redirected for storage. The script ```heatmap.py``` creates a heatmap representation of bridging interactions broken down by EC classifiers. This was a reviewer request.
+A low level object oriented package for running the Met-aromatic algorithm and collecting statistics on bridging interactions. See DSW thesis for a theoretical description. Met-aromatic data is first collected using ```runner.py``` which loads data into a MongoDB database. The PDB codes of interest were low redundancy (high resolution) structures stored in the file ```low_redundancy_delimiter_list.txt```. The script ```analyze.py``` runs a set of queries on the MongoDB database and returns meaningful data which can be redirected for storage. The script ```heatmap.py``` creates a heatmap representation of bridging interactions broken down by EC classifiers.
 
 ### Contents
 ```
