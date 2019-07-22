@@ -8,6 +8,8 @@ A low level object oriented package for running the Met-aromatic algorithm and c
 ./analyze.py                             -- See above
 ./heatmap.py                             -- See above
 ./low_redundancy_delimiter_list.txt      -- Delimiter list of PDB codes used in bridging interaction study
+./flow_diagram.png                       -- Flow chart depicting data flow in this study
+./flow_diagram.html                      -- Flow chart HTML for future edits
 ./utils/filegetter.py                    -- Fetches PDB files over ftp
 ./utils/ma.py                            -- Contains Met-aromatic class
 ./utils/utils.py                         -- Contains Met-aromatic helper functions
