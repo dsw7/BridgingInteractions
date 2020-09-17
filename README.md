@@ -1,5 +1,5 @@
 ## Uh Oh! Looks like this project has moved! :neutral_face:
-### The official repository for this research can be found here: [MetAromatic](https://github.com/dsw7/MetAromatic)
+### The official, beautifully written repository for this research can be found here: [MetAromatic](https://github.com/dsw7/MetAromatic)
 ```
 Legacy notes:
 
